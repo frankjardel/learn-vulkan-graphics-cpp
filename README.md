@@ -1,6 +1,6 @@
 # Course - Graphics Programming with Vulkan and C++ [2026]
 
-## deps
+## deps [Ubuntu/Debian]
 
 ~$ sudo apt install build-essential cmake libgl1-mesa-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev xz-utils libglm-dev cmake libxcb-dri3-0 libxcb-present0 libpciaccess0 \
 libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev g++ gcc \
@@ -26,10 +26,6 @@ clang-format qtbase5-dev qt6-base-dev
 ~$ flatpak run org.freedesktop.Platform.VulkanInfo
 
 ## start project
-
-~$ cmake -S . -B project
-
-## or
 
 ~$ mkdir build && cd build
 
