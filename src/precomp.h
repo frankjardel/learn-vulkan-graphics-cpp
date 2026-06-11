@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
@@ -7,3 +8,4 @@
 #include <string>
 #include <string_view>
 #include <glm/glm.hpp>
+#include <vector>
