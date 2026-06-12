@@ -25,15 +25,9 @@ namespace veng
     void Graphics::CreateInstance()
     {
         gsl::span<gsl::czstring> suggested_extensions = GetSuggestedInstanceExtensions();
-        std::vector<VkExtensionProperties> supported_extensions = GetSupportedInstanceExtensions();
 
-        auto is_extensions_supported = [&supported_extensions](gsl::czstring name)
+        if (!AreAllExtensionSupported(suggested_extensions))
         {
-            return std::any_of(supported_extensions.begin(), supported_extensions.end(), [name](const VkExtensionProperties &property)
-                               { return std::strcmp(property.extensionName, name) == 0; });
-        };
-
-        if (!std::all_of(suggested_extensions.begin(), suggested_extensions.end(), is_extensions_supported)) {
             std::exit(EXIT_FAILURE);
         }
 
@@ -86,5 +80,29 @@ namespace veng
         vkEnumerateInstanceExtensionProperties(nullptr, &count, properties.data());
 
         return properties;
+    }
+
+    bool ExtensionMatchesName(gsl::czstring name, const VkExtensionProperties &properties)
+    {
+        return veng::streq(properties.extensionName, name);
+    }
+
+    bool IsExtensionSupported(gsl::span<VkExtensionProperties> extensions, gsl::czstring name)
+    {
+        return std::any_of(
+            extensions.begin(), extensions.end(),
+            std::bind_front(ExtensionMatchesName, name)
+        );
+    }
+
+    bool Graphics::AreAllExtensionSupported(gsl::span<gsl::czstring> extensions)
+    {
+        std::vector<VkExtensionProperties> supported_extensions = GetSupportedInstanceExtensions();
+
+        return std::all_of(
+            extensions.begin(),
+            extensions.end(),
+            std::bind_front(IsExtensionSupported, supported_extensions)
+        );
     }
 }
